@@ -19,21 +19,26 @@ For networking I'll probably end up using node.js or something similar
 This program uses a hack for functions referencing their class, borrowed from http://stackoverflow.com/questions/2393901/referring-to-parent-class-properties-and-methods-when-inside-a-class-property-ob
 
 This project's webpage is located here:
-http://code.google.com/p/TinyShock/
+http://code.google.com/p/tinyshock/
+To obtain the latest version, install mercurial (sudo apt-get install mercurial) and run:
+hg clone http://code.google.com/p/tinyshock
+A new directory "tinyshock" will be created with the library inside.
 
 This library written by nyrpnz.
 http://nyrpnz.blogspot.com/
 
+// TODO: FPS counter
+
 ***/
 
 var verboseLogging = true;
-function shockLog(message) {
+function shockLog(message) { // Custom logging function, can be enabled/disabled with verboseLogging
 	if (verboseLogging) {
 		console.log("TinyShock: "+message);
 	}
 };
 
-var KEY = new function() {
+var KEY = new function() { // Singleton of constants
 	/*
 		You can generate keycodes this way (python script):
 
@@ -213,7 +218,7 @@ function Surface(object, width, height) {
 	this.getHeight = function() {
 		return self.canvas.height;
 	};
-	this.stretchedBlit = function(surface, dest) {
+	this.stretchedBlit = function(surface, dest) { // FIXME: Does not support a src argument
 		self.context.drawImage(surface.canvas, dest.x, dest.y, dest.w, dest.h);
 	};
 	this.fill = function(color, rect) {
@@ -226,7 +231,7 @@ function Surface(object, width, height) {
 	};
 }
 
-function Event(type) {
+function Event(type) { // Will be recieved by processEvent functions of eventListeners
 	var self = this;
 	this.type = type;
 	this.key = false;
@@ -234,7 +239,7 @@ function Event(type) {
 	this.mouseY = false;
 }
 
-function Sound(target) {
+function Sound(target) { // TinyShock wrapper around the HTML5 Audio tag
 	var self = this;
 	this.ready = false;
 	if (typeof(target) == "string") {
@@ -275,8 +280,8 @@ function getMousePos() {
 	return [TinyShock.mouseX, TinyShock.mouseY];
 }
 
-var TinyShock;
-function ShockInit(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
+var TinyShock; // Singleton
+function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 {
 	TinyShock = new function() {
 		shockLog("Building application.");
