@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TinyShock example page</title>
+		<script src="tinyshock.js"></script>
+
+<script>
+function Box() {
+	// Control with the arrow keys
+	var self = this;
+	self.image = new Surface(false, 50, 50); // Create a new 50x50 surface
+	this.vel_x = 0;
+	this.vel_y = 0;
+	this.mov_x = 0;
+	this.mov_y = 0;
+
+	this.isReady = function() {
+		return self.image.ready;
+	};
+	this.onLaunch = function() {
+		self.rect = self.image.getRect();
+		self.image.fill("#5C2E2D", self.rect); // Fill with a brownish color
+	};
+
+	this.update = function() {
+		// Move
+		self.vel_x += self.mov_x * 2;
+		self.vel_y += self.mov_y * 2;
+		self.rect.x += self.vel_x;
+		self.rect.y += self.vel_y;
+
+		// Bounce off the edges
+		if (self.rect.x < 0) {
+			self.rect.x = 0;
+			self.vel_x *= -1;
+		}
+		if (self.rect.y < 0) {
+			self.rect.y = 0;
+			self.vel_y *= -1;
+		}
+		if (self.rect.right() > TinyShock.screen.canvas.width) {
+			self.rect.x = TinyShock.screen.canvas.width - self.rect.w;
+			self.vel_x *= -1;
+		}
+		if (self.rect.bottom() > TinyShock.screen.canvas.height) {
+			self.rect.y = TinyShock.screen.canvas.height - self.rect.h;
+			self.vel_y *= -1;
+		}
+
+		// Emulate friction
+		if (self.vel_x < 0) self.vel_x += 1;
+		if (self.vel_x > 0) self.vel_x -= 1;
+		if (self.vel_y < 0) self.vel_y += 1;
+		if (self.vel_y > 0) self.vel_y -= 1;
+	};
+	this.processEvent = function(event) {
+		if (event.type == "keydown") {
+			if (event.key == KEY.LEFT) {
+				self.mov_x = -1;
+			} else if (event.key == KEY.RIGHT) {
+				self.mov_x = 1;
+			} else if (event.key == KEY.UP) {
+				self.mov_y = -1;
+			} else if (event.key == KEY.DOWN) {
+				self.mov_y = 1;
+			}
+		} else if (event.type == "keyup") {
+			if (event.key == KEY.LEFT && self.mov_x == -1) {
+				self.mov_x = 0;
+			} else if (event.key == KEY.RIGHT && self.mov_x == 1) {
+				self.mov_x = 0;
+			} else if (event.key == KEY.UP && self.mov_y == -1) {
+				self.mov_y = 0;
+			} else if (event.key == KEY.DOWN && self.mov_y == 1) {
+				self.mov_y = 0;
+			}
+		}
+	};
+	this.draw = function(screen) {
+		screen.blit(self.image, self.rect);
+	};
+};
+function go() {
+	ShockInit("screen", 640, 480);
+	var myBox = new Box();
+	TinyShock.registerActor(myBox); TinyShock.registerEventListener(myBox);
+	TinyShock.launch();
+};
+</script>
+	</head>
+
+	<body bgcolor="black" onload="go();">
+		<br />
+		<div align="center">
+			<canvas id="screen">You need HTML5 to view this page.</canvas>
+			<br />
+			<font color="white">Control with the arrow keys.</font>
+		</div>
+	</body>
+</html>
+
+

@@ -2,7 +2,7 @@
 
 TinyShock ALPHA
 
-TinyShock is a Javascript engine.
+TinyShock is a Javascript engine including support for these modules:
 	- Screen
 	- Rect
 	- Timing
@@ -13,7 +13,8 @@ These have limited support:
 	- Fonts
 The following submodules are TODO:
 	- Networking
-	For networking I'll probably end up using node.js or something similar
+
+For networking I'll probably end up using node.js or something similar
 
 This program uses a hack for functions referencing their class, borrowed from http://stackoverflow.com/questions/2393901/referring-to-parent-class-properties-and-methods-when-inside-a-class-property-ob
 
@@ -424,14 +425,15 @@ function ShockInit(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 				for (i in self.allObjects) {
 					if (!self.allObjects[i].isReady()) {
 						self.allReady = false;
+						break;
 					}
 				}
 				if (self.allReady) {
 					shockLog("Loading complete, prepping actors and event listeners.");
 					for (i in self.allObjects) {
-						if (self.allObjects[i].onReady) {
-							shockLog("Calling onready");
-							self.allObjects[i].onReady();
+						if (self.allObjects[i].onLaunch) {
+							shockLog("Launching...");
+							self.allObjects[i].onLaunch();
 						}
 					}
 				}
