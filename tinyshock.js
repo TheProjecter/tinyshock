@@ -40,7 +40,7 @@ function shockLog(message) { // Custom logging function, can be enabled/disabled
 
 var KEY = new function() { // Singleton of constants
 	/*
-		You can generate keycodes this way (python script):
+		You can generate rough keycodes this way (python script):
 
 		for i in range(0, 126):
 			print "t."+chr(i)+" = "+str(i)+";"
