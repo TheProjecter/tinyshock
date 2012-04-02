@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>TinyShock Pong Demo</title>
-
+		<script src="tinyshock.js"></script>
 <script>
 function go() {
 	initTS("screen", 640, 480);
@@ -13,7 +13,6 @@ function go() {
 		this.mov_x = 2;
 		this.mov_y = 1;
 
-		this.isReady = function() { return true; };
 		this.onLaunch = function() {
 			this.rect = new Rect(TinyShock.screen.getWidth() / 2, TinyShock.screen.getHeight() / 2, 10, 10);
 		};
@@ -76,7 +75,6 @@ function go() {
 		this.update = function() {
 			if (self.rect.centerY() < ball.rect.centerY()) {
 				if (ball.rect.centerY() - self.rect.centerY() < 5) {
-					shockLog("here");
 					self.rect.y = ball.rect.centerY() - self.rect.h / 2;
 				} else {
 					self.rect.y += 3;
@@ -103,8 +101,6 @@ function go() {
 	TinyShock.launch();
 };
 </script>
-
-		<script src="tinyshock.js"></script>
 	</head>
 
 	<body bgcolor="black" onload="go()">

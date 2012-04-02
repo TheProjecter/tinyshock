@@ -437,8 +437,10 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			} else {
 				self.allReady = true;
 				for (i in self.allObjects) {
-					if (!self.allObjects[i].isReady()) {
-						self.allReady = false;
+					if (self.allObjects[i].isReady) {
+						if (!self.allObjects[i].isReady()) {
+							self.allReady = false;
+						}
 						break;
 					}
 				}
