@@ -325,12 +325,12 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 				TinyShock.mouseY = event.offsetY;
 				return;
 			} else if (event.pageX || event.pageY) {
-				// Firefox.... y u match others?
+				// Firefox.... y u no match others?
 				posx = event.pageX;
 				posy = event.pageY;
 			} else if (event.clientX || event.clientY) {
-				posx = e.clientX + document.body.scrollLeft + TinyShock.screen.canvas.scrollLeft;
-				posy = e.clientY + document.body.scrollTop + TinyShock.screen.canvas.scrollTop;
+				posx = event.clientX + document.body.scrollLeft + TinyShock.screen.canvas.scrollLeft;
+				posy = event.clientY + document.body.scrollTop + TinyShock.screen.canvas.scrollTop;
 			}
 			return;
 		}, false);
