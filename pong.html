@@ -39,7 +39,6 @@ function go() {
 		this.speed = 0;
 		this.rect = new Rect(10, 10, 15, 70);
 
-		this.isReady = function() { return true; };
 		this.update = function() {
 			self.rect.y += self.speed;
 			return;
@@ -68,7 +67,6 @@ function go() {
 	var rightPaddle = new function() {
 		var self = this;
 
-		this.isReady = function() { return true; };
 		this.onLaunch = function() {
 			this.rect = new Rect(TinyShock.screen.getWidth() - 25, 10, 15, 70);
 		};
