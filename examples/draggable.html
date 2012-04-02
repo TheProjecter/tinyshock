@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draggable TinyShock Demo</title>
+		<script src="tinyshock.js"></script>
+<script>
+function Draggable(color) {
+	var self = this;
+	this.rect = new Rect(0, 0, 50, 50);
+	this.color = color;
+	this.beingDragged = false;
+	this.dragPointX = 0;
+	this.dragPointY = 0;
+
+	this.update = function() {
+		if (self.beingDragged) {
+			self.rect.x = TinyShock.mouseX - self.dragPointX;
+			self.rect.y = TinyShock.mouseY - self.dragPointY;
+		}
+	};
+	this.processEvent = function(event) {
+		if (event.type == "mousedown") {
+			if (self.rect.collidePoint([event.mouseX, event.mouseY])) {
+				// The mouse has grabbed us.
+				this.dragPointX = event.mouseX - self.rect.x;
+				this.dragPointY = event.mouseY - self.rect.y;
+				self.beingDragged = true;
+			} else {
+				// It hasn't, so we aren't being dragged.
+				self.beingDragged = false;
+			}
+		} else if (event.type == "mouseup") {
+			// Release!
+			if (self.beingDragged == true) {
+				self.beingDragged = false;
+				self.rect.x = event.mouseX - self.dragPointX;
+				self.rect.y = event.mouseY - self.dragPointY;
+			}
+		}
+	};
+	this.draw = function(screen) {
+		screen.fill(self.color, self.rect);
+	};
+}
+function go() {
+	initTS("screen", 640, 480);
+	TinyShock.register(new Draggable("blue"));
+	TinyShock.launch();
+}
+</script>
+	</head>
+
+	<body bgcolor=black onload="go()">
+		<canvas id="screen"></canvas>
+	</body>
+</html>
+

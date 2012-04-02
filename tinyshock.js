@@ -308,17 +308,15 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 
 		this.screen.canvas.addEventListener("mousedown", function (event) {
 			var newEvent = new Event("mousedown");
-			var curMousePos = getMousePos();
-			newEvent.mouseX = curMousePos[0];
-			newEvent.mouseY = curMousePos[1];
+			newEvent.mouseX = self.mouseX;
+			newEvent.mouseY = self.mouseY;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
 		this.screen.canvas.addEventListener("mouseup", function (event) {
 			var newEvent = new Event("mouseup");
-			var curMousePos = getMousePos();
-			newEvent.mouseX = curMousePos[0];
-			newEvent.mouseY = curMousePos[1];
+			newEvent.mouseX = self.mouseX;
+			newEvent.mouseY = self.mouseY;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
