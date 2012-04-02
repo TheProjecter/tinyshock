@@ -223,7 +223,7 @@ function Surface(object, width, height) {
 	};
 	this.fill = function(color, rect) {
 		self.context.fillStyle = color;
-		self.context.fillRect(rect.x, rect.y, rect.right(), rect.bottom());
+		self.context.fillRect(rect.x, rect.y, rect.w, rect.h);
 		self.context.fill();
 	};
 	this.getRect = function() {
@@ -354,6 +354,10 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			} else {
 				return -1;
 			}
+		};
+		this.register = function(target) {
+			self.registerActor(target);
+			self.registerEventListener(target);
 		};
 		this.registerActor = function(actor) {
 			self.actors.push(actor);

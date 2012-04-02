@@ -84,7 +84,7 @@ function go() {
 	initTS("screen", 640, 480);
 
 	var myBox = new Box();
-	TinyShock.registerActor(myBox); TinyShock.registerEventListener(myBox);
+	TinyShock.register(myBox);
 
 	TinyShock.launch();
 };
