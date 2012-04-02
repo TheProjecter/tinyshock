@@ -282,10 +282,6 @@ function Sound(target) { // TinyShock wrapper around the HTML5 Audio tag
 	};
 }
 
-function getMousePos() {
-	return [TinyShock.mouseX, TinyShock.mouseY];
-}
-
 var TinyShock; // Singleton
 function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 {
