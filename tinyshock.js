@@ -153,6 +153,12 @@ function Rect(sx, sy, sw, sh) {
 	this.center = function() {
 		return [self.x + (self.w / 2), self.y + (self.h / 2)];
 	};
+	this.centerX = function() {
+		return self.x + self.w / 2;
+	};
+	this.centerY = function() {
+		return self.y + self.h / 2;
+	};
 	this.topleft = function() { return [self.x, self.y]; };
 	this.bottomleft = function() { return [self.x, self.y + self.h]; };
 	this.topright = function() { return [self.x + self.w, self.y]; };
@@ -162,7 +168,7 @@ function Rect(sx, sy, sw, sh) {
 	this.bottom = function() { return self.y + self.h; };
 
 	this.move = function(xOffset, yOffset) { return new Rect(self.x + xOffset, self.y + yOffset, self.w, self.h); };
-	this.moveIP = function(xOffset, yOffset) { self.x += xOffset; self.y += xOffset; return self; };
+	this.moveIP = function(xOffset, yOffset) { self.x += xOffset; self.y += yOffset; return self; };
 }
 function Surface(object, width, height) {
 // First argument is either a canvas, a resolution, or a filename
@@ -429,7 +435,6 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 					self.actors[i].draw(self.screen);
 				}
 			} else {
-				shockLog("Still loading...");
 				self.allReady = true;
 				for (i in self.allObjects) {
 					if (!self.allObjects[i].isReady()) {
