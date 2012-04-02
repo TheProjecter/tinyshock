@@ -27,8 +27,6 @@ A new directory "tinyshock" will be created with the library inside.
 This library written by nyrpnz.
 http://nyrpnz.blogspot.com/
 
-// TODO: FPS counter
-
 ***/
 
 var verboseLogging = true;
@@ -224,7 +222,7 @@ function Surface(object, width, height) {
 	this.getHeight = function() {
 		return self.canvas.height;
 	};
-	this.stretchedBlit = function(surface, dest) { // FIXME: Does not support a src argument
+	this.stretchedBlit = function(surface, dest) { // TODO: Does not support a src argument
 		self.context.drawImage(surface.canvas, dest.x, dest.y, dest.w, dest.h);
 	};
 	this.fill = function(color, rect) {
@@ -294,7 +292,7 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 		this.rect = this.screen.getRect();
 		this.millisecondsPerFrame = 30;
 		this.clearEveryFrame = true;
-		this.clearColor = "white"; // TODO: Better screen clearing.
+		this.clearColor = "white"; // TODO: A better method screen clearing.
 
 		this.mouseX = 0;
 		this.mouseY = 0;
