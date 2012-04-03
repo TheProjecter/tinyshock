@@ -6,24 +6,24 @@
 <script>
 function Draggable(color) {
 	var self = this;
-	this.rect = new Rect(0, 0, 50, 50);
-	this.color = color;
-	this.beingDragged = false;
-	this.dragPointX = 0;
-	this.dragPointY = 0;
+	self.rect = new Rect(0, 0, 50, 50);
+	self.color = color;
+	self.beingDragged = false;
+	self.dragPointX = 0;
+	self.dragPointY = 0;
 
-	this.update = function() {
+	self.update = function() {
 		if (self.beingDragged) {
 			self.rect.x = TinyShock.mouseX - self.dragPointX;
 			self.rect.y = TinyShock.mouseY - self.dragPointY;
 		}
 	};
-	this.processEvent = function(event) {
+	self.processEvent = function(event) {
 		if (event.type == "mousedown") {
 			if (self.rect.collidePoint([event.mouseX, event.mouseY])) {
 				// The mouse has grabbed us.
-				this.dragPointX = event.mouseX - self.rect.x;
-				this.dragPointY = event.mouseY - self.rect.y;
+				self.dragPointX = event.mouseX - self.rect.x;
+				self.dragPointY = event.mouseY - self.rect.y;
 				self.beingDragged = true;
 			} else {
 				// It hasn't, so we aren't being dragged.
@@ -38,7 +38,7 @@ function Draggable(color) {
 			}
 		}
 	};
-	this.draw = function(screen) {
+	self.draw = function(screen) {
 		screen.fill(self.color, self.rect);
 	};
 }

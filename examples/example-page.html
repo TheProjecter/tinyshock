@@ -8,16 +8,16 @@
 function Box() {
 	// Control with the arrow keys
 	var self = this;
-	this.vel_x = 0;
-	this.vel_y = 0;
-	this.mov_x = 0;
-	this.mov_y = 0;
+	self.vel_x = 0;
+	self.vel_y = 0;
+	self.mov_x = 0;
+	self.mov_y = 0;
 
-	this.isReady = function() {
+	self.isReady = function() {
 		return self.image.ready;
 	};
 
-	this.update = function() {
+	self.update = function() {
 		// Move
 		self.vel_x += self.mov_x * 2;
 		self.vel_y += self.mov_y * 2;
@@ -48,7 +48,7 @@ function Box() {
 		if (self.vel_y < 0) self.vel_y += 1;
 		if (self.vel_y > 0) self.vel_y -= 1;
 	};
-	this.processEvent = function(event) {
+	self.processEvent = function(event) {
 		if (event.type == "keydown") {
 			if (event.key == KEY.LEFT) {
 				self.mov_x = -1;
@@ -71,7 +71,7 @@ function Box() {
 			}
 		}
 	};
-	this.draw = function(screen) {
+	self.draw = function(screen) {
 		screen.fill("#5C2E2D", self.rect);
 	};
 };
