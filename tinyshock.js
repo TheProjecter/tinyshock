@@ -128,83 +128,83 @@ var KEY = new function() { // Singleton of constants
 function Rect(sx, sy, sw, sh) {
 	var self = this;
 
-	this.x = sx;
-	this.y = sy;
-	this.w = sw;
-	this.h = sh;
+	self.x = sx;
+	self.y = sy;
+	self.w = sw;
+	self.h = sh;
 
 	// Convenience functions
-	this.collideRect = function(other) {
+	self.collideRect = function(other) {
 		if (self.x > other.x + other.w) { return false; }
 		if (self.x + self.w < other.x) { return false; }
 		if (self.y > other.y + other.h) { return false; }
 		if (self.y + self.h < other.y) { return false; }
 		return true;
 	};
-	this.collidePoint = function(point) {
+	self.collidePoint = function(point) {
 		if (point[0] < self.x) { return false; }
 		if (point[0] > self.x + self.w) { return false; }
 		if (point[1] < self.y) { return false; }
 		if (point[1] > self.y + self.h) { return false; }
 		return true;
 	};
-	this.center = function() {
+	self.center = function() {
 		return [self.x + (self.w / 2), self.y + (self.h / 2)];
 	};
-	this.centerX = function() {
+	self.centerX = function() {
 		return self.x + self.w / 2;
 	};
-	this.centerY = function() {
+	self.centerY = function() {
 		return self.y + self.h / 2;
 	};
-	this.topleft = function() { return [self.x, self.y]; };
-	this.bottomleft = function() { return [self.x, self.y + self.h]; };
-	this.topright = function() { return [self.x + self.w, self.y]; };
-	this.bottomright = function() { return [self.x + self.w, self.y + self.x]; };
+	self.topleft = function() { return [self.x, self.y]; };
+	self.bottomleft = function() { return [self.x, self.y + self.h]; };
+	self.topright = function() { return [self.x + self.w, self.y]; };
+	self.bottomright = function() { return [self.x + self.w, self.y + self.x]; };
 
-	this.right = function() { return self.x + self.w; };
-	this.bottom = function() { return self.y + self.h; };
+	self.right = function() { return self.x + self.w; };
+	self.bottom = function() { return self.y + self.h; };
 
-	this.move = function(xOffset, yOffset) { return new Rect(self.x + xOffset, self.y + yOffset, self.w, self.h); };
-	this.moveIP = function(xOffset, yOffset) { self.x += xOffset; self.y += yOffset; return self; };
+	self.move = function(xOffset, yOffset) { return new Rect(self.x + xOffset, self.y + yOffset, self.w, self.h); };
+	self.moveIP = function(xOffset, yOffset) { self.x += xOffset; self.y += yOffset; return self; };
 }
 function Surface(object, width, height) {
 // First argument is either a canvas, a resolution, or a filename
 // Width/height are optional if a canvas or a filename
 	shockLog("Adding new Surface. "+object);
 	var self = this;
-	this.canvas = false;
-	this.context = false;
-	this.ready = false;
+	self.canvas = false;
+	self.context = false;
+	self.ready = false;
 
 	// Setup canvas/context
 	if (object == false) { // If the arguments are a resolution...
-		this.canvas = document.createElement("canvas");
-		this.canvas.width = width;
-		this.canvas.height = height;
-		this.fromImage = false;
-		this.context = this.canvas.getContext("2d");
-		this.ready = true;
+		self.canvas = document.createElement("canvas");
+		self.canvas.width = width;
+		self.canvas.height = height;
+		self.fromImage = false;
+		self.context = self.canvas.getContext("2d");
+		self.ready = true;
 	} else if (object.width) { // If the first argument is a canvas...
-		this.canvas = object;
-		this.canvas.width = width;
-		this.canvas.height = height;
-		this.context = this.canvas.getContext("2d");
-		this.ready = true;
+		self.canvas = object;
+		self.canvas.width = width;
+		self.canvas.height = height;
+		self.context = self.canvas.getContext("2d");
+		self.ready = true;
 	} else  if (typeof(object) == "string") { // If the first argument is a filename
-		this.image =  new Image();
-		this.canvas = document.createElement("canvas");
-		this.image.onload = function() {
+		self.image =  new Image();
+		self.canvas = document.createElement("canvas");
+		self.image.onload = function() {
 			self.canvas.width = self.image.width;
 			self.canvas.height = self.image.height;
 			self.context = self.canvas.getContext("2d");
 			self.context.drawImage(self.image, 0, 0);
 			self.ready = true;
 		};
-		this.image.src = object;
+		self.image.src = object;
 	}
 
-	this.blit = function(surface, dest, src) {
+	self.blit = function(surface, dest, src) {
 		if (src) {
 			if (self.getRect().collideRect(dest))
 			{
@@ -216,66 +216,66 @@ function Surface(object, width, height) {
 			}
 		}
 	};
-	this.getWidth = function() {
+	self.getWidth = function() {
 		return self.canvas.width;
 	};
-	this.getHeight = function() {
+	self.getHeight = function() {
 		return self.canvas.height;
 	};
-	this.stretchedBlit = function(surface, dest) { // TODO: Does not support a src argument
+	self.stretchedBlit = function(surface, dest) { // TODO: Does not support a src argument
 		self.context.drawImage(surface.canvas, dest.x, dest.y, dest.w, dest.h);
 	};
-	this.fill = function(color, rect) {
+	self.fill = function(color, rect) {
 		self.context.fillStyle = color;
 		self.context.fillRect(rect.x, rect.y, rect.w, rect.h);
 		self.context.fill();
 	};
-	this.getRect = function() {
+	self.getRect = function() {
 		return new Rect(0, 0, self.canvas.width, self.canvas.height);
 	};
 }
 
 function Event(type) { // Will be recieved by processEvent functions of eventListeners
 	var self = this;
-	this.type = type;
-	this.key = false;
-	this.mouseX = false;
-	this.mouseY = false;
+	self.type = type;
+	self.key = false;
+	self.mouseX = false;
+	self.mouseY = false;
 }
 
 function Sound(target) { // TinyShock wrapper around the HTML5 Audio tag
 	var self = this;
-	this.ready = false;
+	self.ready = false;
 	if (typeof(target) == "string") {
 		shockLog("Adding new Sound from file ["+target+"]");
-		this.audio = new Audio();
-		this.audio.onload = function() {
+		self.audio = new Audio();
+		self.audio.onload = function() {
 			self.ready = true;
 		};
-		this.audio.src = target;
+		self.audio.src = target;
 	} else {
 		shockLog("Adding new Sound from existing Audio object "+target);
-		this.audio = target;
-		this.ready = true;
+		self.audio = target;
+		self.ready = true;
 	}
 
-	this.play = function() {
+	self.play = function() {
 		self.audio.play();
 	};
-	this.pause = function() {
+	self.pause = function() {
 		self.audio.pause();
 	};
-	this.stop = function() {
+	self.stop = function() {
 		self.audio.pause();
 		self.audio.currentTime = 0;
 	};
-	this.seek = function(where) {
+	self.seek = function(where) {
 		self.audio.currentTime = where;
 	};
-	this.enableLooping = function() {
+	self.enableLooping = function() {
 		self.audio.loop = "loop";
 	};
-	this.disableLooping = function() {
+	self.disableLooping = function() {
 		self.audio.loop = "";
 	};
 }
@@ -286,39 +286,39 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 	TinyShock = new function() {
 		shockLog("Building application.");
 		var self = this;
-		this.screen = new Surface(document.getElementById(screenid));
-		this.screen.canvas.width = scr_w;
-		this.screen.canvas.height = scr_h;
-		this.rect = this.screen.getRect();
-		this.millisecondsPerFrame = 30;
-		this.clearEveryFrame = true;
-		this.clearColor = "white"; // TODO: A better method screen clearing.
+		self.screen = new Surface(document.getElementById(screenid));
+		self.screen.canvas.width = scr_w;
+		self.screen.canvas.height = scr_h;
+		self.rect = self.screen.getRect();
+		self.millisecondsPerFrame = 30;
+		self.clearEveryFrame = true;
+		self.clearColor = "white"; // TODO: A better method screen clearing.
 
-		this.mouseX = 0;
-		this.mouseY = 0;
+		self.mouseX = 0;
+		self.mouseY = 0;
 
-		this.actors = [];
-		this.eventListeners = [];
+		self.actors = [];
+		self.eventListeners = [];
 
-		this.eventQueue = [];
+		self.eventQueue = [];
 
-		this.allReady = false;
+		self.allReady = false;
 
-		this.screen.canvas.addEventListener("mousedown", function (event) {
+		self.screen.canvas.addEventListener("mousedown", function (event) {
 			var newEvent = new Event("mousedown");
 			newEvent.mouseX = self.mouseX;
 			newEvent.mouseY = self.mouseY;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
-		this.screen.canvas.addEventListener("mouseup", function (event) {
+		self.screen.canvas.addEventListener("mouseup", function (event) {
 			var newEvent = new Event("mouseup");
 			newEvent.mouseX = self.mouseX;
 			newEvent.mouseY = self.mouseY;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
-		this.screen.canvas.addEventListener("mousemove", function (event) {
+		self.screen.canvas.addEventListener("mousemove", function (event) {
 			if (event.offsetX) {
 				TinyShock.mouseX = event.offsetX;
 				TinyShock.mouseY = event.offsetY;
@@ -344,35 +344,35 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
-		this.nextEvent = function() {
+		self.nextEvent = function() {
 			if (self.eventQueue.length > 0) {
 				return self.eventQueue.pop();
 			} else {
 				return -1;
 			}
 		};
-		this.register = function(target) {
+		self.register = function(target) {
 			self.registerActor(target);
 			self.registerEventListener(target);
 		};
-		this.registerActor = function(actor) {
+		self.registerActor = function(actor) {
 			self.actors.push(actor);
 		};
-		this.deregisterActor = function(actor) {
+		self.deregisterActor = function(actor) {
 			// This function is safe to call multiple times.
 			var index = self.actors.indexOf(actor);
 			if (index != -1) {
 				self.actors.splice(index, 1);
 			}
 		};
-		this.registerEventListener = function(listener) {
+		self.registerEventListener = function(listener) {
 			self.eventListeners.push(listener);
 		};
-		this.setBPS = function(bps) { // Convenience function for computing milliseconds per frame from desired FPS
+		self.setBPS = function(bps) { // Convenience function for computing milliseconds per frame from desired FPS
 			self.millisecondsPerFrame = Math.round(1000 / bps);
 			shockLog("Setting milliseconds per frame to "+self.millisecondsPerFrame+" ("+bps+" BPS)");
 		};
-		this.launch = function() {
+		self.launch = function() {
 			var i, j;
 			var found;
 			self.allObjects = [];
@@ -400,7 +400,7 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			};
 			self.frame();
 		};
-		this.frame = function() {
+		self.frame = function() {
 			var oldtime = new Date().getTime();
 			var curtime;
 			var i;
