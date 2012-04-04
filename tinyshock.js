@@ -248,12 +248,12 @@ function Event(type) { // Will be recieved by processEvent functions of eventLis
 function Sound(target) { // TinyShock wrapper around the HTML5 Audio tag
 	var self = this;
 	self.ready = false;
+
 	if (typeof(target) == "string") {
 		shockLog("Adding new Sound from file ["+target+"]");
 		self.audio = new Audio();
-		self.audio.onload = function() {
-			self.ready = true;
-		};
+
+		self.audio.addEventListener('loadedmetadata', function() { self.ready = true; }, false);
 		self.audio.src = target;
 	} else {
 		shockLog("Adding new Sound from existing Audio object "+target);
