@@ -171,7 +171,6 @@ function Rect(sx, sy, sw, sh) {
 function Surface(object, width, height) {
 // First argument is either a canvas, a resolution, or a filename
 // Width/height are optional if a canvas or a filename
-	shockLog("Adding new Surface. "+object);
 	var self = this;
 	self.canvas = false;
 	self.context = false;
@@ -179,6 +178,7 @@ function Surface(object, width, height) {
 
 	// Setup canvas/context
 	if (object == false) { // If the arguments are a resolution...
+		shockLog("Adding new Surface from resolution ["+width+", "+height+"].");
 		self.canvas = document.createElement("canvas");
 		self.canvas.width = width;
 		self.canvas.height = height;
@@ -186,12 +186,14 @@ function Surface(object, width, height) {
 		self.context = self.canvas.getContext("2d");
 		self.ready = true;
 	} else if (object.width) { // If the first argument is a canvas...
+		shockLog("Adding new Surface from existing HTML Canvas.");
 		self.canvas = object;
 		self.canvas.width = width;
 		self.canvas.height = height;
 		self.context = self.canvas.getContext("2d");
 		self.ready = true;
 	} else  if (typeof(object) == "string") { // If the first argument is a filename
+		shockLog("Adding new Surface from file ["+object+"].");
 		self.image =  new Image();
 		self.canvas = document.createElement("canvas");
 		self.image.onload = function() {
