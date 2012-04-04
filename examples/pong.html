@@ -89,6 +89,7 @@ var rightPaddle = new function() {
 function go() {
 	initTS("screen", 640, 480);
 
+	TinyShock.clearEveryFrame = true;
 	TinyShock.register(leftPaddle);
 
 	TinyShock.registerActor(ball);

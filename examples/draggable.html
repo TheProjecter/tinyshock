@@ -44,6 +44,7 @@ function Draggable(color) {
 }
 function go() {
 	initTS("screen", 640, 480);
+	TinyShock.clearEveryFrame = true;
 	TinyShock.register(new Draggable("blue"));
 	TinyShock.launch();
 }
