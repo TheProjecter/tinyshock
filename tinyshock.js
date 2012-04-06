@@ -432,6 +432,8 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 						else {
 							numReady += 1;
 						}
+					} else {
+						numReady += 1;
 					}
 				}
 				self.screen.fill("black", self.screen.getRect());
