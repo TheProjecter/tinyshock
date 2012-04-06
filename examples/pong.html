@@ -90,10 +90,10 @@ function go() {
 	initTS("screen", 640, 480);
 
 	TinyShock.clearEveryFrame = true;
-	TinyShock.register(leftPaddle);
 
-	TinyShock.registerActor(ball);
-	TinyShock.registerActor(rightPaddle);
+	TinyShock.register(leftPaddle);
+	TinyShock.register(ball);
+	TinyShock.register(rightPaddle);
 
 	TinyShock.setBPS(60);
 

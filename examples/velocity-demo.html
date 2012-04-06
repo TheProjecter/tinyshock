@@ -12,10 +12,7 @@ function Box() {
 	self.vel_y = 0;
 	self.mov_x = 0;
 	self.mov_y = 0;
-
-	self.isReady = function() {
-		return self.image.ready;
-	};
+	self.rect = new Rect(0, 0, 50, 50);
 
 	self.update = function() {
 		// Move
@@ -77,6 +74,7 @@ function Box() {
 };
 function go() {
 	initTS("screen", 640, 480);
+	TinyShock.clearEveryFrame = true;
 
 	var myBox = new Box();
 	TinyShock.register(myBox);
