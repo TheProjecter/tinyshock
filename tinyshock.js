@@ -254,7 +254,7 @@ function Surface(object, width, height) {
 	};
 }
 
-function Event(type) { // Will be recieved by processEvent functions of eventListeners
+function Event(type) { // Will be recieved by processEvent functions of actors
 	var self = this;
 	self.type = type;
 	self.key = false;
@@ -317,10 +317,7 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 		self.mouseY = 0;
 
 		self.actors = [];
-		self.eventListeners = [];
-
 		self.eventQueue = [];
-
 		self.allReady = false;
 
 		self.screen.canvas.addEventListener("mousedown", function (event) {
@@ -374,18 +371,15 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			self.registerActor(target);
 			self.registerEventListener(target);
 		};
-		self.registerActor = function(actor) {
+		self.register = function(actor) {
 			self.actors.push(actor);
 		};
-		self.deregisterActor = function(actor) {
+		self.deregister = function(actor) {
 			// This function is safe to call multiple times.
 			var index = self.actors.indexOf(actor);
 			if (index != -1) {
 				self.actors.splice(index, 1);
 			}
-		};
-		self.registerEventListener = function(listener) {
-			self.eventListeners.push(listener);
 		};
 		self.setBPS = function(bps) { // Convenience function for computing milliseconds per frame from desired FPS
 			self.millisecondsPerFrame = Math.round(1000 / bps);
@@ -394,29 +388,6 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 		self.launch = function() {
 			var i, j;
 			var found;
-			self.allObjects = [];
-			for (i in self.actors) {
-				found = false;
-				for (j in self.allObjects) {
-					if (self.allObjects[j] == self.actors[i]) {
-						found = true;
-					}
-				}
-				if (!found) {
-					self.allObjects.push(self.actors[i]);
-				}
-			};
-			for (i in self.eventListeners) {
-				found = false;
-				for (j in self.allObjects) {
-					if (self.allObjects[j] == self.eventListeners[i]) {
-						found = true;
-					}
-				}
-				if (!found) {
-					self.allObjects.push(self.eventListeners[i]);
-				}
-			};
 			self.frame();
 		};
 		self.frame = function() {
@@ -426,13 +397,16 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			if (self.allReady) {
 				var event;
 
+				// Loop through events
 				while (true) {
 					event = self.nextEvent();
 					if (event == -1) {
 						break;
 					}
-					for (i in self.eventListeners) {
-						self.eventListeners[i].processEvent(event);
+					for (i in self.actors) {
+						if (self.actors[i].processEvent) {
+							self.actors[i].processEvent(event);
+						}
 					}
 				}
 
@@ -440,15 +414,19 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 					self.screen.fill(self.clearColor, self.screen.getRect());
 				}
 				for (i in self.actors) {
-					self.actors[i].update();
-					self.actors[i].draw(self.screen);
+					if (self.actors[i].update) {
+						self.actors[i].update();
+					}
+					if (self.actors[i].draw) {
+						self.actors[i].draw(self.screen);
+					}
 				}
 			} else {
 				self.allReady = true;
 				var numReady = 0;
-				for (i in self.allObjects) {
-					if (self.allObjects[i].isReady) {
-						if (!self.allObjects[i].isReady()) {
+				for (i in self.actors) {
+					if (self.actors[i].isReady) {
+						if (!self.actors[i].isReady()) {
 							self.allReady = false;
 						}
 						else {
@@ -459,14 +437,14 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 				self.screen.fill("black", self.screen.getRect());
 				self.screen.drawCenteredText("Loading...", "white");
 				if (numReady > 0) { // Prevent divide-by-0 problems
-					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (self.allObjects.length / numReady), 25));
+					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (self.actors.length / numReady), 25));
 				}
 				if (self.allReady) {
 					self.screen.drawCenteredText("Launching...", "white");
 					shockLog("Launching...");
-					for (i in self.allObjects) {
-						if (self.allObjects[i].onLaunch) {
-							self.allObjects[i].onLaunch();
+					for (i in self.actors) {
+						if (self.actors[i].onLaunch) {
+							self.actors[i].onLaunch();
 						}
 					}
 				}
