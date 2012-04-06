@@ -1,31 +1,27 @@
 /***
+ ______   ___
+|_  __/  /  _/
+ / /    __\ \
+/_/     \__/
 
 TinyShock ALPHA
 
-TinyShock is a Javascript engine including support for these modules:
-	- Screen
-	- Rect
-	- Timing
-	- Surface
-	- Sound
-	- Events
-These have limited support:
-	- Fonts
-The following submodules are TODO:
-	- Networking
-
-For networking I'll probably end up using node.js or something similar
-
-This program uses a hack for functions referencing their class, borrowed from http://stackoverflow.com/questions/2393901/referring-to-parent-class-properties-and-methods-when-inside-a-class-property-ob
+TinyShock is a Javascript game engine.
 
 This project's webpage is located here:
 http://code.google.com/p/tinyshock/
-To obtain the latest version, install mercurial (sudo apt-get install mercurial) and run:
+You can download new version and read tutorials and reference pages there.
+
+To obtain the latest development commit, install mercurial (sudo apt-get install mercurial) and run:
 hg clone http://code.google.com/p/tinyshock
+
 A new directory "tinyshock" will be created with the library inside.
 
 This library written by nyrpnz.
 http://nyrpnz.blogspot.com/
+
+
+This program uses a hack for functions referencing their class, borrowed from http://stackoverflow.com/questions/2393901/referring-to-parent-class-properties-and-methods-when-inside-a-class-property-ob
 
 ***/
 
@@ -37,91 +33,31 @@ function shockLog(message) { // Custom logging function, can be enabled/disabled
 };
 
 var KEY = new function() { // Singleton of constants
-	/*
-		You can generate rough keycodes this way (python script):
-
-		for i in range(0, 126):
-			print "t."+chr(i)+" = "+str(i)+";"
-	*/
 	var t = this;
 	t.TAB = 9;
 	t.ENTER = 13;
 	t.ESCAPE = 27;
 	t.SPACE = 32;
-	t.LEFT = 37;
-	t.UP = 38;
-	t.RIGHT = 39;
-	t.DOWN = 40;
+	// Arrow keys
+	t.LEFT = 37; t.UP = 38; t.RIGHT = 39; t.DOWN = 40;
 	t.N_0 = 41;
-	t.ASTERISK = 42;
-	t.PLUS = 43;
-	t.COMMA = 44;
-	t.MINUS = 45;
-	t.PERIOD = 46;
-	t.SLASH = 47;
-	t.N_1 = 49;
-	t.N_2 = 50;
-	t.N_3 = 51;
-	t.N_4 = 52;
-	t.N_5 = 53;
-	t.N_6 = 54;
-	t.N_7 = 55;
-	t.N_8 = 56;
-	t.N_9 = 57;
+	// Numpad operators
+	t.ASTERISK = 42; t.PLUS = 43; t.COMMA = 44; t.MINUS = 45; t.PERIOD = 46; t.SLASH = 47;
+	// Numbers
+	t.N_1=49;t.N_2=50;t.N_3=51;t.N_4=52;t.N_5=53;t.N_6=54;t.N_7=55;t.N_8=56;t.N_9=57;
 	t.COLON = 58;
 	t.SEMICOLON = 59;
-	t.LESSTHAN = 60;
-	t.EQUALS = 61;
-	t.GREATERTHAN = 62;
+	// Comparison operators
+	t.LESSTHAN = 60; t.EQUALS = 61; t.GREATERTHAN = 62;
 	t.QUESTIONMARK = 63;
-	t.NP_1 = 97;
-	t.NP_2 = 98;
-	t.NP_3 = 99;
-	t.NP_4 = 100;
-	t.NP_5 = 101;
-	t.NP_6 = 102;
-	t.NP_7 = 103;
-	t.NP_8 = 104;
-	t.NP_9 = 105;
+	// Number Pad
+	t.NP_1=97;t.NP_2=98;t.NP_3=99;t.NP_4=100;t.NP_5=101;t.NP_6=102;t.NP_7=103;t.NP_8=104;t.NP_9=105;
 	t.NUMLOCK = 144;
-	t.A = 65;
-	t.B = 66;
-	t.C = 67;
-	t.D = 68;
-	t.E = 69;
-	t.F = 70;
-	t.G = 71;
-	t.H = 72;
-	t.I = 73;
-	t.J = 74;
-	t.K = 75;
-	t.L = 76;
-	t.M = 77;
-	t.N = 78;
-	t.O = 79;
-	t.P = 80;
-	t.Q = 81;
-	t.R = 82;
-	t.S = 83;
-	t.T = 84;
-	t.U = 85;
-	t.V = 86;
-	t.W = 87;
-	t.X = 88;
-	t.Y = 89;
-	t.Z = 90;
-	t.F1 = 112;
-	t.F2 = 113;
-	t.F3 = 114;
-	t.F4 = 115;
-	t.F5 = 116;
-	t.F6 = 117;
-	t.F7 = 118;
-	t.F8 = 119;
-	t.F9 = 120;
-	t.F10 = 121;
-	t.F11 = 122;
-	t.F12 = 123;
+	// Letters
+	t.A=65;t.B=66;t.C=67;t.D=68;t.E=69;t.F=70;t.G=71;t.H=72;t.I=73;t.J=74;t.K=75;t.L=76;t.M=77;t.N=78;
+	t.O=79;t.P=80;t.Q=81;t.R=82;t.S=83;t.T=84;t.U=85;t.V=86;t.W=87;t.X=88;t.Y=89;t.Z=90;
+	// Function keys
+	t.F1=112;t.F2=113;t.F3=114;t.F4=115;t.F5=116;t.F6=117;t.F7=118;t.F8=119;t.F9=120;t.F10=121;t.F11=122;t.F12=123;
 	t.TILDE = 192;
 };
 
