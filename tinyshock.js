@@ -360,14 +360,10 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 					}
 				}
 			} else {
-				self.allReady = true;
 				var numReady = 0;
 				for (i in self.actors) {
 					if (self.actors[i].isReady) {
-						if (!self.actors[i].isReady()) {
-							self.allReady = false;
-						}
-						else {
+						if (self.actors[i].isReady()) {
 							numReady += 1;
 						}
 					} else {
@@ -376,12 +372,13 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 				}
 				self.screen.fill("black", self.screen.getRect());
 				self.screen.drawCenteredText("Loading...", "white");
+
 				if (numReady > 0) { // Prevent divide-by-0 problems
-					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (self.actors.length / numReady), 25));
+					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (numReady / self.actors.length), 25));
 				}
-				if (self.allReady) {
+				if (numReady == self.actors.length) {
+					self.allReady = true;
 					self.screen.drawCenteredText("Launching...", "white");
-					shockLog("Launching...");
 					for (i in self.actors) {
 						if (self.actors[i].onLaunch) {
 							self.actors[i].onLaunch();
