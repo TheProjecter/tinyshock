@@ -246,8 +246,10 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 		self.screen.canvas.height = scr_h;
 		self.rect = self.screen.getRect();
 		self.millisecondsPerFrame = 30;
+
+		// Screen clearing for the lazy
 		self.clearEveryFrame = false;
-		self.clearColor = "white"; // TODO: A better method screen clearing.
+		self.clearColor = "white";
 
 		self.mouseX = 0;
 		self.mouseY = 0;
