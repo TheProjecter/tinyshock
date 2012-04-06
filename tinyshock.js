@@ -440,7 +440,9 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 					}
 				}
 				self.screen.fill("black", self.screen.getRect());
-				self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.allObjects.length / self.numReady, 25));
+				if (numReady > 0) { // Prevent divide-by-0 problems
+					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (self.allObjects.length / numReady), 25));
+				}
 				if (self.allReady) {
 					shockLog("Loading complete, prepping actors and event listeners.");
 					for (i in self.allObjects) {
