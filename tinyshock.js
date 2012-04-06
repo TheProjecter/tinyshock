@@ -175,6 +175,7 @@ function Surface(object, width, height) {
 	self.canvas = false;
 	self.context = false;
 	self.ready = false;
+	self.currentFont = "20pt sans-serif";
 
 	// Setup canvas/context
 	if (object == false) { // If the arguments are a resolution...
@@ -217,6 +218,22 @@ function Surface(object, width, height) {
 				self.context.drawImage(surface.canvas, 0, 0, dest.w, dest.h, dest.x, dest.y, dest.w, dest.h);
 			}
 		}
+	};
+	self.setFont = function(font) {
+		self.currentFont = font;
+	};
+	self.drawText = function(text, color, textX, textY) {
+		self.context.font = self.currentFont;
+		self.context.fillStyle = color;
+		self.context.fillText(text, textX, textY);
+	};
+	self.drawCenteredText = function(text, color) {
+		var oldAlign = self.context.textAlign;
+		self.context.font = self.currentFont;
+		self.context.textAlign = "center";
+		self.context.fillStyle = color;
+		self.context.fillText(text, self.getWidth() / 2, self.getHeight() / 2);
+		self.context.textAlign = oldAlign;
 	};
 	self.getWidth = function() {
 		return self.canvas.width;
@@ -440,14 +457,15 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 					}
 				}
 				self.screen.fill("black", self.screen.getRect());
+				self.screen.drawCenteredText("Loading...", "white");
 				if (numReady > 0) { // Prevent divide-by-0 problems
 					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (self.allObjects.length / numReady), 25));
 				}
 				if (self.allReady) {
-					shockLog("Loading complete, prepping actors and event listeners.");
+					self.screen.drawCenteredText("Launching...", "white");
+					shockLog("Launching...");
 					for (i in self.allObjects) {
 						if (self.allObjects[i].onLaunch) {
-							shockLog("Launching...");
 							self.allObjects[i].onLaunch();
 						}
 					}
