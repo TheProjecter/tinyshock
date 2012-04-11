@@ -377,6 +377,7 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 					self.screen.fill("green", new Rect(0, self.screen.getRect().bottom() - 50, self.screen.getWidth() * (numReady / self.actors.length), 25));
 				}
 				if (numReady == self.actors.length) {
+					self.screen.fill("black", self.screen.getRect());
 					self.allReady = true;
 					self.screen.drawCenteredText("Launching...", "white");
 					for (i in self.actors) {
