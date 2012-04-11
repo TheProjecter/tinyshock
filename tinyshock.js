@@ -32,6 +32,12 @@ function shockLog(message) { // Custom logging function, can be enabled/disabled
 	}
 };
 
+var KEYDOWN = "keydown";
+var KEYUP = "keyup";
+var MOUSEMOVE = "mousemove";
+var MOUSEDOWN = "mousedown";
+var MOUSEUP = "mouseup";
+
 var KEY = new function() { // Singleton of constants
 	var t = this;
 	t.TAB = 9;
@@ -259,14 +265,14 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 		self.allReady = false;
 
 		self.screen.canvas.addEventListener("mousedown", function (event) {
-			var newEvent = new Event("mousedown");
+			var newEvent = new Event(MOUSEDOWN);
 			newEvent.mouseX = self.mouseX;
 			newEvent.mouseY = self.mouseY;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
 		self.screen.canvas.addEventListener("mouseup", function (event) {
-			var newEvent = new Event("mouseup");
+			var newEvent = new Event(MOUSEUP);
 			newEvent.mouseX = self.mouseX;
 			newEvent.mouseY = self.mouseY;
 			TinyShock.eventQueue.push(newEvent);
@@ -287,13 +293,13 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 			return;
 		}, false);
 		document.addEventListener("keydown", function (event) {
-			var newEvent = new Event("keydown");
+			var newEvent = new Event(KEYDOWN);
 			newEvent.key = event.keyCode;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
 
 		document.addEventListener("keyup", function (event) {
-			var newEvent = new Event("keyup");
+			var newEvent = new Event(KEYUP);
 			newEvent.key = event.keyCode;
 			TinyShock.eventQueue.push(newEvent);
 		}, false);
