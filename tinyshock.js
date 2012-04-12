@@ -76,6 +76,9 @@ function Rect(sx, sy, sw, sh) {
 	self.h = sh;
 
 	// Convenience functions
+	self.copy = function() {
+		return new Rect(self.x, self.y, self.w, self.h);
+	};
 	self.collideRect = function(other) {
 		if (self.x > other.x + other.w) { return false; }
 		if (self.x + self.w < other.x) { return false; }
@@ -89,6 +92,15 @@ function Rect(sx, sy, sw, sh) {
 		if (point[1] < self.y) { return false; }
 		if (point[1] > self.y + self.h) { return false; }
 		return true;
+	};
+	self.inflate = function(ix, iy) {
+		return new Rect(self.x - ix, self.y - iy, self.w + ix, self.h + iy);
+	};
+	self.inflateIP = function(ix, iy) {
+		self.x -= ix;
+		self.w += ix;
+		self.y -= iy;
+		self.h += iy;
 	};
 	self.center = function() {
 		return [self.x + (self.w / 2), self.y + (self.h / 2)];
