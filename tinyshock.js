@@ -260,6 +260,7 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 		shockLog("Building application.");
 		var self = this;
 		self.screen = new Surface(document.getElementById(screenid));
+		self.screen.canvas.setAttribute("style", "position: relative; "+self.screen.canvas.getAttribute("style"));
 		self.screen.canvas.width = scr_w;
 		self.screen.canvas.height = scr_h;
 		self.rect = self.screen.getRect();
@@ -295,9 +296,9 @@ function initTS(screenid, scr_w, scr_h, flags) // TODO: No flags exist yet!
 				TinyShock.mouseX = event.offsetX;
 				TinyShock.mouseY = event.offsetY;
 				return;
-			} else if (event.pageX || event.pageY) {
-				TinyShock.mouseX = event.pageX;
-				TinyShock.mouseY = event.pageY;
+			} else if (event.layerX || event.layerY) {
+				TinyShock.mouseX = event.layerX;
+				TinyShock.mouseY = event.layerY;
 			} else if (event.clientX || event.clientY) {
 				TinyShock.mouseX = event.clientX + document.body.scrollLeft + TinyShock.screen.canvas.scrollLeft;
 				TinyShock.mouseY = event.clientY + document.body.scrollTop + TinyShock.screen.canvas.scrollTop;
